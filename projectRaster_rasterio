@@ -1,0 +1,52 @@
+##############################################################################################################
+# -*- coding: utf-8 -*-
+# Autor: Alicia Pizarro
+# Script06: Transform projection of imagery to specific coordinate system
+##############################################################################################################
+
+#Importancion de modulos
+import rasterio
+from rasterio.enums import Resampling
+from rasterio.warp import calculate_default_transform, reproject
+
+# Input imagery file name before transformation
+raster = '/home/alicia/COMPLUTIG/geoprocess/corine/C3S-LC-L4-LCCS-Map-300m-P1Y-2020-v2.1-Spain.tif'
+
+# Save output imagery file name after transformation
+outputFolder = '/home/alicia/COMPLUTIG/geoprocess/project/C3S-LC-L4-LCCS-Map-300m-P1Y-2020-v2.1-Spain_84.tif'
+
+
+referenceSystem = 4326
+
+def projectRas (raster, referenceSystem, outputFolder):
+    """
+    This function reprojected de raster data in other reference system.
+    -------------------------------------------------------------------
+    Parameters of function
+    --------------------------------------------------------------------
+    :param raster: the input raster to change crs.
+    :param referenceSystem: code of EPSG Reference System.
+    :param outputFolder: directory of output raster.
+    --------------------------------------------------------------------
+    :return: raster in the select crs.
+    """
+
+    with rasterio.open(raster) as imagery:
+        transform, width, height = calculate_default_transform(imagery.crs, referenceSystem, imagery.width, imagery.height, * imagery.bounds)
+        kwargs = imagery.meta.copy()
+        kwargs.update({'crs': referenceSystem, 'transform': transform, 'width': width, 'height': height})
+        with rasterio.open(outputFolder, 'w', **kwargs) as dst:
+            for i in range(1, imagery.count + 1):
+                reproject(
+                    source=rasterio.band(imagery, i),
+                    destination=rasterio.band(dst, i),
+                    src_transform=imagery.transform,
+                    src_crs=imagery.crs,
+                    dst_transform=transform,
+                    dst_crs=referenceSystem,
+                    resampling=Resampling.nearest)
+
+    print("\n")
+    print('Reprojection was succeeded')
+
+projectRas(raster, referenceSystem, outputFolder)
