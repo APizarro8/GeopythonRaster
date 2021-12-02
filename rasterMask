@@ -1,0 +1,48 @@
+# -*- coding: utf-8 -*-
+#######################################################################################################################
+# Autor: Alicia Pizarro
+#######################################################################################################################
+
+# import modules
+import fiona
+import rasterio
+from rasterio.mask import mask
+
+# input data
+raster = '/home/alicia/COMPLUTIG/geoprocess/corine/C3S-LC-L4-LCCS-Map-300m-P1Y-2020-v2.1-Spain.tif'
+shape = '/XXXX'
+
+# output data
+outputFolder = 'XXXX'
+
+def rasterMask(raster, shape, outputFolder):
+    """
+    This function cuts the raster by the shape extracting by mask.
+    -------------------------------------------------------------------
+    Parameters of function
+    --------------------------------------------------------------------
+    :param raster:  a raster data.
+    :param shape: a shape data for by mask.
+    :param outputFolder: directory of output raster.
+    --------------------------------------------------------------------
+    :return: a raster with clipped to the dimensions of the shapefile.
+    """
+
+    with fiona.open(shape, "r") as shapefile:
+        shapes = [feature["geometry"] for feature in shapefile]
+
+    with rasterio.open(raster) as src:
+        out_image, out_transform = rasterio.mask.mask(src, shapes, crop=True)
+        out_meta = src.meta
+
+    out_meta.update({"driver": "GTiff",
+                     "height": out_image.shape[1],
+                     "width": out_image.shape[2],
+                     "transform": out_transform})
+
+    with rasterio.open(outputFolder + "CLC18_mask.tif", "w", **out_meta) as dest:
+        dest.write(out_image)
+
+    print(" mask is ok .")
+
+rasterMask(raster, shape, outputFolder)
