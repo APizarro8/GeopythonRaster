@@ -10,19 +10,10 @@ import sys
 import warnings
 warnings.filterwarnings('ignore')
 
-#---Input data.
-sys.path.append("/home/alicia/COMPLUTIG/geoprocess/corine")
-
-#reproyección a 5 metros del DSM
-file = '/home/alicia/PROYECTO_COMPLUTIG/geoprocess/corine/C3S-LC-L4-LCCS-Map-300m-P1Y-2020-v2.1-Spain.tif'
-outputFolder = '/home/alicia/PROYECTO_COMPLUTIG/geoprocess/project/CLC_project_84.tif'
-
-referenceSystem = 'EPSG:4326'
-
-
 def projectRas(file, referenceSystem, outputFolder):
     """
     This function reprojected de raster data in other reference system.
+    Change de code EPSG and size of pixel.
     -------------------------------------------------------------------
     Parameters of function
     --------------------------------------------------------------------
@@ -33,9 +24,9 @@ def projectRas(file, referenceSystem, outputFolder):
     :return: raster in the select crs.
     """
 
-    os.system('gdalwarp -t_srs %d -tr 0.002777777777777993857 -0.002777777777777995592 -r average -of GTiff ' 
-              '/home/alicia/COMPLUTIG/geoprocess/corine/C3S-LC-L4-LCCS-Map-300m-P1Y-2020-v2.1-Spain.tif '
-              '/home/alicia/COMPLUTIG/geoprocess/corine/CLC_project_84.tif') %referenceSystem
+    os.system('gdalwarp -t_srs EPSG:4326 -tr 0.002777777777777993857 -0.002777777777777995592 -r average -of GTiff ' 
+              'inputData.tif '
+              'outputData.tif')
 
     print("\n")
     print('Reprojection was succeeded')
