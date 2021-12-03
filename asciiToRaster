@@ -1,0 +1,36 @@
+# -*- coding: utf-8 -*-
+#######################################################################################################################
+# Autor: Alicia Pizarro
+# Script03:
+#######################################################################################################################
+
+# import modules
+from osgeo import gdal, osr
+
+#---Input data
+
+raster = gdal.Open('XXX.asc')
+outputFolder = 'XXX'
+
+
+def asciiToTiff(raster, outputFolder):
+    """
+    This function convert ascci to tiff format.
+    -------------------------------------------------------------------
+    Parameters of function
+    -------------------------------------------------------------------
+    :param raster: a input data raster ascii
+    :param outputFolder: directory of output raster.
+    -------------------------------------------------------------------
+    :return: a input data in a tiff format.
+    """
+    drv = gdal.GetDriverByName('GTiff')
+    tiffFile = drv.CreateCopy(outputFolder + 'XXXXXX.tif', raster)
+    srs = osr.SpatialReference()
+    srs.ImportFromEPSG(4326)
+    tiffFile.SetProjection(srs.ExportToWkt())
+
+    print("\n")
+    print('Conversion to tiff was successful.')
+
+asciiToTiff(raster, outputFolder)
