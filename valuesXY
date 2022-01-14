@@ -9,20 +9,20 @@ import rasterstats as rs
 import geopandas as gpd
 
 #Datos de entrada
-points = gpd.read_file('/home/alicia/PROYECTO_COMPLUTIG/geoprocess/clip/J1_VIIRS_C2_Europe_24h_clip.shp')
-raster = '/home/alicia/PROYECTO_COMPLUTIG/geoprocess/base/C3S-LC-L4-LCCS-Map-300m-P1Y-2020-v2.1-Spain.tif'
+points = gpd.read_file('/......shp')
+raster = '/......tif'
 
 #Extraer puntos y obtener valores del raster
 values = rs.point_query(points, raster) #Extrae valores del raster con los puntos
-final_points = points.copy() #Los guarda
+final_points = points.copy() #Los copia 
 final_points['values'] = values #Crear campo y copiar los valores
 
 #Guardar resultados en csv
-outdir = '/home/alicia/PROYECTO_COMPLUTIG/geoprocess/rasterio'
-final_points.to_csv('%s/hotspot.csv' %outdir)
+outdir = '/.......'
+final_points.to_csv('%s/......csv' %outdir)
 
 # Guardar resultados en shapefile
-final_points.to_file(driver='ESRI Shapefile', filename='%s/hotspot_VIIRS.shp' %outdir)
+final_points.to_file(driver='ESRI Shapefile', filename='%s/......shp' %outdir)
 
 print("\n")
-print("Los valores del raster según las coordenadas de los puntos del shape se han obtenido correcta
+print("Los valores X e Y de raster han sido extraídos.
