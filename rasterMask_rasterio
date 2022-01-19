@@ -9,11 +9,11 @@ import rasterio
 from rasterio.mask import mask
 
 # input data
-raster = '/home/alicia/COMPLUTIG/geoprocess/corine/C3S-LC-L4-LCCS-Map-300m-P1Y-2020-v2.1-Spain.tif'
-shape = '/XXXX'
+raster = '/..... .tif'
+shape = '/....... shp'
 
 # output data
-outputFolder = 'XXXX'
+outputFolder = '/..... .tif'
 
 def rasterMask(raster, shape, outputFolder):
     """
@@ -40,7 +40,7 @@ def rasterMask(raster, shape, outputFolder):
                      "width": out_image.shape[2],
                      "transform": out_transform})
 
-    with rasterio.open(outputFolder + "CLC18_mask.tif", "w", **out_meta) as dest:
+    with rasterio.open(outputFolder + "/.... .tif", "w", **out_meta) as dest:
         dest.write(out_image)
 
     print(" mask is ok .")
